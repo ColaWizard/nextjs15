@@ -1,30 +1,26 @@
-import { model, models, Schema } from "mongoose";
+import { model, models, Schema, Types } from "mongoose";
 
-export interface IUser {
+export interface IAccount {
+  userId: Types.ObjectId;
   name: string;
-  username: string;
-  email: string;
-  bio?: string;
-  image: string;
-  location?: string;
-  portfolio?: string;
-  reputation?: number;
+  image?: string;
+  password?: string;
+  provider: string;
+  providerAccountId: string;
 }
 
-const UserSchema = new Schema(
+const AccountSchema = new Schema<IAccount>(
   {
+    userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
     name: { type: String, required: true },
-    username: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
-    bio: { type: String },
-    image: { type: String, required: true },
-    location: { type: String },
-    portfolio: { type: String },
-    reputation: { type: Number, default: 0 },
+    image: { type: String },
+    password: { type: String },
+    provider: { type: String, required: true },
+    providerAccountId: { type: String, required: true },
   },
   { timestamps: true }
 );
 
-const User = models?.user || model<IUser>("User", UserSchema);
+const Account = models?.Account || model<IAccount>("Account", AccountSchema);
 
-export default User;
+export default Account;
